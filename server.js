@@ -31,7 +31,7 @@ function compare(a, b) {
     if (a.todo_completed) {
       if (b.todo_completed) {
         // -------------------a and b completed---------------------------
-        return a.todo_description.compareTo(b.todo_description);
+        return (a.todo_description).localeCompare(b.todo_description);
       } else {
         //-------------------a completed , b not -------------------------
         return 1;
@@ -42,7 +42,7 @@ function compare(a, b) {
         return -1;
       } else {
         // -------------------a & b not completed-----------------------------
-        return a.todo_description.compareTo(b.todo_description);
+        return (a.todo_description).localeCompare(b.todo_description);
       }
     }
   }
@@ -72,7 +72,8 @@ function compare(a, b) {
 
 todoRoutes.get("/", async (req, res) => {
   var todos = await Todo.find();
-  todos = todos.sort(compare);
+  if(todos.length>0)
+    todos = todos.sort(compare);
   res.json(todos);
 });
 
