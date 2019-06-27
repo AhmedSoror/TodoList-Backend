@@ -74,6 +74,27 @@ todoRoutes.route('/update/:id').post((req,res)=>{
   })
 })
 
+todoRoutes.delete("/delete/:id", async (req, res) => {
+  try {
+    const todoId = req.params.id;
+    const todo = Todo.findOne({ todoId });
+    if (!todo)
+      return res.status(400).send({ error: "todo does not exist" });
+    const deletedTodo = await Todo.findByIdAndRemove(
+      todoId
+    );
+    res.json({
+      msg: "Todo was deleted successfully",
+      data: deletedTodo
+    });
+  } catch (error) {
+    //error will be handled later
+    console.log(error);
+  }
+});
+
+
+
 app.use('/todos', todoRoutes);
 
 
