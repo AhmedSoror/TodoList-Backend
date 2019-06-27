@@ -18,16 +18,21 @@ mongoose
   .catch(err => console.log(err)
 );
 
-todoRoutes.get("/",async(req,res)=>{
-  Todo.find(function(err,todos){
-      if(err){
-          console.log(err);
-      }
-      else{
-          res.json(todos);
-      }
-  })
+todoRoutes.get("/", async (req, res) => {
+  const todos = await Todo.find();
+  res.json( todos );
 });
+
+// todoRoutes.get("/",async(req,res)=>{
+//   Todo.find(function(err,todos){
+//       if(err){
+//           console.log(err);
+//       }
+//       else{
+//           res.json(todos);
+//       }
+//   })
+// });
 
 todoRoutes.route('/:id').get((req,res)=>{
   var id=req.params.id;
@@ -35,6 +40,7 @@ todoRoutes.route('/:id').get((req,res)=>{
     res.json(todo);
   })
 })
+
 todoRoutes.route('/add').post((req,res)=>{
   var todo=new Todo(req.body);
   todo.save()
@@ -45,6 +51,7 @@ todoRoutes.route('/add').post((req,res)=>{
         res.status(400).send('adding new todo failed');
       })
 })
+
 todoRoutes.route('/update/:id').post((req,res)=>{
   Todo.findById(req.params.id,(err,todo)=>{
     if(!todo){
